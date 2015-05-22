@@ -1,0 +1,3 @@
+[submodule "support/rust"]
+	path = support/rust
+	url = https://github.com/mozilla/rust.git
