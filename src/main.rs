@@ -20,7 +20,7 @@ pub fn main() -> ! {
     let hal = hal::Hal::new();
 
     // Enable clock on GPIOE
-    hal.rcc.ahbenr.set_gpioe_en(true);
+    hal.rcc.ahbenr.set_gpioe_en(1);
 
     // Set pins as output
     for pin in 8..16 {
