@@ -7,6 +7,12 @@ pub enum Mode {
     Analog
 }
 
+pub enum PullUpPullDown {
+    None,
+    PullUp,
+    PullDown,
+}
+
 pub struct Port {
     moder: Register<u32>,
     otyper: Register<u32>,
@@ -40,6 +46,24 @@ impl Port {
             Mode::Output    => 0b01,
             Mode::Alternate => 0b10,
             Mode::Analog    => 0b11
+        };
+
+        // Clear the bits we are interested in.
+        let masked = self.moder.read() & mask;
+
+        // Set them to the new value.
+        self.moder.write(masked | (val << shift));
+    }
+
+    pub fn set_pin_pupd(&mut self, pin: u8, pupd: PullUpPullDown) {
+        // Each pin's pupd configuration takes 2 bits.
+        let shift = pin * 2;
+        let mask = !(0b11 << shift);
+
+        let val = match pupd {
+            PullUpPullDown::None => 0b00,
+            PullUpPullDown::PullUp => 0b01,
+            PullUpPullDown::PullDown => 0b10
         };
 
         // Clear the bits we are interested in.
