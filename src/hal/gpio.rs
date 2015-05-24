@@ -33,7 +33,7 @@ impl Port {
     }
 
     pub fn set(&mut self, data: u16) {
-        self.idr.write(data as u32);
+        self.odr.write(data as u32);
     }
 
     pub fn set_pin_direction(&mut self, pin: u8, mode: Mode) {
