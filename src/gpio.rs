@@ -22,6 +22,14 @@ pub struct Port {
 }
 
 impl Port {
+    pub fn get(&self) -> u16 {
+        self.idr.read() as u16
+    }
+
+    pub fn set(&mut self, data: u16) {
+        self.idr.write(data as u32);
+    }
+
     pub fn set_pin_direction(&mut self, pin: u8, mode: Mode) {
         // Each pin's in/out configuration takes 2 bits.
         let shift = pin * 2;
@@ -41,12 +49,26 @@ impl Port {
         self.moder.write(masked | (val << shift));
     }
 
+    pub fn get_pin(&self, pin: u8) -> bool {
+        self.get() & (1 << pin) != 0
+    }
+
     pub fn set_pin(&mut self, pin: u8) {
         self.bsrrl.write(1 << pin);
     }
 
     pub fn clear_pin(&mut self, pin: u8) {
         self.bsrrh.write(1 << pin);
+    }
+
+    pub fn toggle_pin(&mut self, pin: u8) {
+        let current = self.get_pin(pin);
+
+        if current {
+            self.clear_pin(pin);
+        } else {
+            self.set_pin(pin);
+        }
     }
 }
 
