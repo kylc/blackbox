@@ -102,4 +102,3 @@ pub const ADC4_BASE: usize          = AHB3PERIPH_BASE + 0x00000500;
 pub const ADC3_4_COMMON_BASE: usize = AHB3PERIPH_BASE + 0x00000700;
 
 pub const DBGMCU_BASE: usize        = 0xE0042000; /* Debug MCU registers base address */
-
