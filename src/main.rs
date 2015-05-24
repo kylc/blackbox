@@ -29,17 +29,16 @@ pub fn main() -> ! {
         rcc.ahbenr.set_gpioe_en(true);
 
         // Set pins as output
-        gpioe.set_pin_direction(11, gpio::Mode::Output);
-        gpioe.set_pin_direction(12, gpio::Mode::Output);
+        for pin in 8..16 {
+            gpioe.set_pin_direction(pin, gpio::Mode::Output);
+            gpioe.set_pin_direction(pin, gpio::Mode::Output);
+        }
 
         loop {
-            gpioe.set_pin(12);
-            sleep::sleep_millis(100);
-            gpioe.set_pin(11);
-
-            gpioe.clear_pin(12);
-            sleep::sleep_millis(100);
-            gpioe.clear_pin(11);
+            for pin in 8..16 {
+                gpioe.toggle_pin(pin);
+                sleep::sleep_millis(100);
+            }
         }
     }
 }
