@@ -25,7 +25,7 @@ all: main.hex main.elf
 lib/libcore.rlib: support/rust/src/libcore/lib.rs
 	$(RUSTC) $(RUSTFLAGS) --out-dir lib $<
 
-%.o: %.rs src/*.rs lib/libcore.rlib
+%.o: %.rs src/*.rs src/**/*.rs lib/libcore.rlib
 	$(RUSTC) $(RUSTFLAGS) --emit obj -o $@ $<
 
 %.elf: $(OBJS)

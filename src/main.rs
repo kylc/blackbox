@@ -8,16 +8,13 @@
 
 extern crate core;
 
-pub mod rlibc;
-pub mod runtime;
-pub mod memory_map;
-#[macro_use] pub mod register;
-pub mod interrupts;
-pub mod rcc;
-pub mod gpio;
-pub mod sleep;
+pub mod support;
+pub mod hal;
+pub mod os;
 
-use memory_map::*;
+use hal::memory_map::*;
+use hal::{rcc, gpio};
+use os::sleep;
 
 #[no_mangle]
 pub fn main() -> ! {

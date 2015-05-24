@@ -1,4 +1,4 @@
-use register::Register;
+use hal::register::Register;
 
 pub enum Mode {
     Input,

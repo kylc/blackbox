@@ -20,9 +20,6 @@
 //! necessary. It is an error to include this library when also linking with
 //! the system libc library.
 
-#![no_std]
-#![feature(no_std, core)]
-
 // This library defines the builtin functions, so it would be a shame for
 // LLVM to optimize these function calls to themselves!
 #![no_builtins]
