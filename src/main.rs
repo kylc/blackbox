@@ -2,6 +2,7 @@
 #![feature(core)]
 #![feature(lang_items)]
 #![feature(asm)]
+#![feature(core_intrinsics)]
 #![no_std]
 
 #![crate_type="staticlib"]
