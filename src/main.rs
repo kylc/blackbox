@@ -51,8 +51,8 @@ pub fn main() -> ! {
 
     // Set pins as output
     for pin in 8..16 {
-        hal.gpioe.set_pin_direction(pin, gpio::Mode::Output);
-        hal.gpioe.set_pin_direction(pin, gpio::Mode::Output);
+        hal.gpioe.set_pin_mode(pin, gpio::Mode::Output);
+        hal.gpioe.set_pin_mode(pin, gpio::Mode::Output);
     }
 
     loop {
