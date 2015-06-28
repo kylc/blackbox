@@ -23,7 +23,8 @@ pub struct Port {
     bsrrl: Register<u16>,
     bsrrh: Register<u16>,
     lckr: Register<u32>,
-    afr: Register<[u32; 2]>,
+    afrl: Register<u32>,
+    afrh: Register<u32>,
     brr: Register<u32>
 }
 
