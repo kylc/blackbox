@@ -3,7 +3,6 @@
 #[lang = "panic_fmt"] fn panic_fmt() -> ! { loop {} }
 
 #[no_mangle]
-pub unsafe fn __aeabi_unwind_cpp_pr0() -> ()
-{
+pub unsafe fn __aeabi_unwind_cpp_pr0() -> () {
     loop {}
 }
