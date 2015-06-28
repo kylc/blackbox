@@ -37,7 +37,7 @@ impl Port {
         self.odr.write(data as u32);
     }
 
-    pub fn set_pin_direction(&mut self, pin: u8, mode: Mode) {
+    pub fn set_pin_mode(&mut self, pin: u8, mode: Mode) {
         // Each pin's in/out configuration takes 2 bits.
         let shift = pin * 2;
         let mask = !(0b11 << shift);
@@ -93,6 +93,17 @@ impl Port {
             self.clear_pin(pin);
         } else {
             self.set_pin(pin);
+        }
+    }
+
+    pub fn set_pin_af(&mut self, pin: u8, mode: u8) {
+        // 4 bits per pin AF.
+        let bits = (mode as u32) << (pin as u32 * 4);
+
+        if pin <= 7 {
+            self.afrl.write(bits);
+        } else if pin >= 8 && pin <= 15 {
+            self.afrh.write(bits);
         }
     }
 }
