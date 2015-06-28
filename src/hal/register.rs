@@ -24,8 +24,23 @@ impl<T> Register<T> {
     }
 }
 
+/// Transform a range to a bitmask by setting all bits of the range.
+///
+/// # Examples
+///
+/// ```
+/// let m = bitmask(0..2);
+/// assert_eq!(m, (1 << 0) | (1 << 1) | (1 << 2));
+/// ```
 pub fn bitmask(range: Range<u8>) -> u32 {
-    range.fold(0, |mask, bit| mask | (1 << bit))
+    // Range operator creates the range [start, end). STM32 datasheets define
+    // register ranges as [start, end].
+    let inclusive_range = Range {
+        start: range.start,
+        end: range.end + 1
+    };
+
+    inclusive_range.fold(0, |mask, bit| mask | (1 << bit))
 }
 
 macro_rules! register {
