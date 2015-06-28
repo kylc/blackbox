@@ -40,25 +40,6 @@ pub unsafe extern fn __aeabi_memcpy(dest: *mut u8, src: *const u8,
 }
 
 #[no_mangle]
-pub unsafe extern fn __aeabi_memmove(dest: *mut u8, src: *const u8,
-                             n: usize) -> *mut u8 {
-    if src < dest as *const u8 { // copy from end
-        let mut i = n;
-        while i != 0 {
-            i -= 1;
-            *dest.offset(i as isize) = *src.offset(i as isize);
-        }
-    } else { // copy from beginning
-        let mut i = 0;
-        while i < n {
-            *dest.offset(i as isize) = *src.offset(i as isize);
-            i += 1;
-        }
-    }
-    return dest;
-}
-
-#[no_mangle]
 pub unsafe extern fn __aeabi_memset(s: *mut u8, c: i32, n: usize) -> *mut u8 {
     let mut i = 0;
     while i < n {
@@ -87,7 +68,7 @@ mod test {
     use core::str::StrExt;
     use core::slice::SliceExt;
 
-    use super::{__aeabi_memcmp, __aeabi_memset, __aeabi_memcpy, __aeabi_memmove};
+    use super::{__aeabi_memcmp, __aeabi_memset, __aeabi_memcpy};
 
     #[test]
     fn memcmp_single_byte_pointers() {
@@ -147,32 +128,6 @@ mod test {
             assert!(__aeabi_memcmp(src.as_ptr(), dst.as_ptr(), 100) != 0);
             let _ = __aeabi_memcpy(dst.as_mut_ptr(), src.as_ptr(), 100);
             assert_eq!(__aeabi_memcmp(src.as_ptr(), dst.as_ptr(), 100), 0);
-        }
-    }
-
-    #[test]
-    fn memmove_overlapping() {
-        {
-            let mut buffer = [ b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9' ];
-            unsafe {
-                __aeabi_memmove(&mut buffer[4], &buffer[0], 6);
-                let mut i = 0;
-                for byte in b"0123012345".iter() {
-                    assert_eq!(buffer[i], *byte);
-                    i += 1;
-                }
-            }
-        }
-        {
-            let mut buffer = [ b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9' ];
-            unsafe {
-                __aeabi_memmove(&mut buffer[0], &buffer[4], 6);
-                let mut i = 0;
-                for byte in b"4567896789".iter() {
-                    assert_eq!(buffer[i], *byte);
-                    i += 1;
-                }
-            }
         }
     }
 }
