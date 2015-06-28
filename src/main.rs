@@ -12,9 +12,35 @@ extern crate core;
 pub mod support;
 pub mod hal;
 pub mod os;
+pub mod drivers;
 
 use hal::gpio;
 use os::sleep;
+
+fn setup_spi(hal: &mut hal::Hal) {
+    hal.rcc.apb2enr.set_spi1_en(1);
+
+    // For SPI signal pins.
+    hal.rcc.ahbenr.set_gpioa_en(1);
+
+    // For SPI mode select.
+    hal.rcc.ahbenr.set_gpioe_en(1);
+
+    // GPIOE3 pin for L3GD20 spi select.
+    hal.gpioe.set_pin_mode(3, gpio::Mode::Output);
+
+    // Start with SPI disabled.
+    hal.gpioe.set_pin(3);
+
+    // Set up GPIOE pins for AF5 for SPI1 signals.
+    for p in 5..8 {
+        hal.gpioe.set_pin_mode(p, gpio::Mode::Alternate);
+        hal.gpioe.set_pin_af(p, 5);
+    }
+
+    hal.spi1.cr1.set_mstr(1);
+    hal.spi1.cr1.set_spe(1);
+}
 
 #[no_mangle]
 pub fn main() -> ! {
